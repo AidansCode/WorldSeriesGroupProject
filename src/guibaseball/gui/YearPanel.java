@@ -1,16 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package guibaseball;
+package guibaseball.gui;
 
 import javax.swing.*;
 import java.awt.event.*;
 
-/**
- * @author sgzoy
- */
 public class YearPanel extends JPanel {
     private JTextField yearText;
     private JButton FF, FR;

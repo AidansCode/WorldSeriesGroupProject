@@ -1,14 +1,9 @@
-package guibaseball;
+package guibaseball.gui;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-/**
- *
- * @author sgzoy
- */
 public class TeamPanel extends JPanel {
 
     private JTextField TeamText;

@@ -1,18 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package guibaseball;
+package guibaseball.gui;
 
-import java.awt.*;
 import javax.swing.*;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 
-/**
- * @author sgzoy
- */
 public class FivePanel extends JPanel {
 
     private JLabel num1, num2, num3a, num3b, num4, num5;
@@ -36,6 +25,5 @@ public class FivePanel extends JPanel {
         add(num5);
 
     }
-
 
 }

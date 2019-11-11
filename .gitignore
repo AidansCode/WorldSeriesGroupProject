@@ -1,3 +1,8 @@
 .idea/
 WorldSeriesProject.iml
 out/
+/CloneWorldSeries/nbproject/private/
+/nbproject/private/
+build.xml
+manifest.mf
+nbproject/

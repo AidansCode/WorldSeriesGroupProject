@@ -2,16 +2,16 @@ package guibaseball.resource;
 
 public class WorldSeriesWin {
 
-    private String teamName;
+    private Team team;
     private int year;
 
-    public WorldSeriesWin(String teamName, int year) {
-        this.teamName = teamName;
+    public WorldSeriesWin(Team team, int year) {
+        this.team = team;
         this.year = year;
     }
 
-    public String getTeamName() {
-        return teamName;
+    public Team getTeam() {
+        return team;
     }
 
     public int getYear() {

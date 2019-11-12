@@ -19,6 +19,8 @@ public class GUIBaseBall {
 
         frame.pack();
         frame.getContentPane().add(tp);
+        frame.setSize(500, 300);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 

@@ -15,7 +15,7 @@ public class DataManager {
      */
     private static DataManager instance;
 
-    private static DataManager getInstance() {
+    public static DataManager getInstance() {
         if (instance == null) {
             instance = new DataManager();
         }
@@ -31,6 +31,7 @@ public class DataManager {
 
     private DataManager() {
         wins = new ArrayList<>();
+        teams = new ArrayList<>();
         String fileName = "data.csv";
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
@@ -69,9 +70,7 @@ public class DataManager {
     }
 
     public WorldSeriesWin getByYear(int year) {
-        Optional<WorldSeriesWin> win = wins.stream().filter(curWin -> curWin.getYear() == year).findFirst();
-
-        return win.orElse(null);
+        return wins.stream().filter(curWin -> curWin.getYear() == year).findFirst().orElse(null);
     }
 
     public List<WorldSeriesWin> getByTeam(String team) {
@@ -80,6 +79,13 @@ public class DataManager {
     
     public List<Team> getWinnersOrdered() {
         return teams.stream().sorted(Comparator.comparing(Team::getTotalWins)).collect(Collectors.toList());
+    }
+
+    public List<Integer> getYears() {
+        ArrayList<Integer> years = new ArrayList<>();
+        wins.forEach(win -> years.add(win.getYear()));
+
+        return years;
     }
 
 }

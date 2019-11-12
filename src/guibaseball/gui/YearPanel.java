@@ -1,70 +1,107 @@
 package guibaseball.gui;
 
-import javax.swing.*;
-import java.awt.event.*;
+import guibaseball.actionlisteners.SeekDirectionActionListener;
+import guibaseball.data.DataManager;
+import guibaseball.resource.Team;
+import guibaseball.resource.WorldSeriesWin;
 
-public class YearPanel extends JPanel {
-    private JTextField yearText;
-    private JButton FF, FR;
-    int[] yearList = new int[115];
-    int Seeker = 0;
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
+
+public class YearPanel extends SeekablePanel {
+
+    private JTextField yearInput;
+    private JLabel resultLabel;
+    private int minYear, maxYear;
 
     public YearPanel() {
 
-        for (int year = 0; year < 115; year++) {
-            yearList[year] = 1903 + 1 * year;
-        }
+        List<Integer> years = DataManager.getInstance().getYears();
+        minYear = years.get(0);
+        maxYear = years.get(years.size() - 1);
 
-        yearText = new JTextField(4);
-        yearText.setText("1903");
-        FF = new JButton(">>");
-        FR = new JButton("<<");
-        add(FR);
-        add(yearText);
-        add(FF);
-        FF.addActionListener(new ForwardButtonListener());
-        FR.addActionListener(new BackwardsButtonListener());
+        GridBagLayout gridBagLayout = new GridBagLayout();
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        setLayout(gridBagLayout);
 
+        SeekButton backButton = new SeekButton("<<", -1);
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1;
+        gridBagConstraints.weighty = 0;
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagLayout.setConstraints(backButton, gridBagConstraints );
+        add(backButton);
+
+        yearInput = new JTextField(4);
+        yearInput.setText(Integer.toString(minYear));
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1;
+        gridBagConstraints.weighty = 0;
+        gridBagConstraints.anchor = GridBagConstraints.NORTH;
+        gridBagLayout.setConstraints( yearInput, gridBagConstraints );
+        add(yearInput);
+
+        SeekButton forwardButton = new SeekButton(">>", 1);
+        gridBagConstraints.gridx = 12;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1;
+        gridBagConstraints.weighty = 0;
+        gridBagConstraints.anchor = GridBagConstraints.EAST;
+        gridBagLayout.setConstraints(forwardButton, gridBagConstraints);
+        add(forwardButton);
+
+        resultLabel = new JLabel("");
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 7;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1;
+        gridBagConstraints.weighty = 1;
+        gridBagConstraints.anchor = GridBagConstraints.CENTER;
+        gridBagLayout.setConstraints(resultLabel, gridBagConstraints);
+        add(resultLabel);
+
+        SeekDirectionActionListener seekDirectionActionListener = new SeekDirectionActionListener();
+        forwardButton.addActionListener(seekDirectionActionListener);
+        backButton.addActionListener(seekDirectionActionListener);
     }
 
-    private class ForwardButtonListener implements ActionListener {
-
-        public void actionPerformed(ActionEvent event) {
-
-            Seeker++;
-
-            if (Seeker == 115) {
-                Seeker = 0;
-
-            }
-            try {
-
-                yearText.setText(Integer.toString(yearList[Seeker]));
-            } catch (ArrayIndexOutOfBoundsException e) {
-                Seeker = 1;
-                yearText.setText(Integer.toString(yearList[Seeker]));
-
-            }
-        }
+    @Override
+    public int getFilter() {
+        return Integer.parseInt(yearInput.getText());
     }
 
-    private class BackwardsButtonListener implements ActionListener {
-        /*Makes radio seek through the stations backwards from the end of the array
-          to the top. If AM is selected it will go through AM stations, and FM will go
-          through FM stations. if it gets to the beginning of the array, it will
-          go to the end again.
-                */
-        public void actionPerformed(ActionEvent event) {
+    @Override
+    public void setFilter(int filter) {
+        if (filter < minYear)
+            filter = maxYear;
+        else if (filter > maxYear)
+            filter = minYear;
 
-            Seeker--;
-            try {
-                yearText.setText(Integer.toString(yearList[Seeker]));
-            } catch (ArrayIndexOutOfBoundsException e) {
-                Seeker = 108;
-                yearText.setText(Integer.toString(yearList[Seeker]));
-            }
+        yearInput.setText(Integer.toString(filter));
+        updateResult();
+    }
 
-        }
+    private void updateResult() {
+        int year = getFilter();
+        WorldSeriesWin win = DataManager.getInstance().getByYear(year);
+        Team team = win.getTeam();
+        String teamName = team != null ? team.getTeamName() : "N/A";
+
+        resultLabel.setText(year + " Winner: " + teamName);
     }
 
 }

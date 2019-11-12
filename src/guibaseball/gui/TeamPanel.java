@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class TeamPanel extends JPanel {
+public class TeamPanel extends SeekablePanel {
 
     private JTextField TeamText;
     private JButton FF, FR;
@@ -24,6 +24,16 @@ public class TeamPanel extends JPanel {
         add(FF);
         FF.addActionListener(new ForwardButtonListener());
         FR.addActionListener(new BackwardsButtonListener());
+    }
+
+    @Override
+    public int getFilter() {
+        return 0;
+    }
+
+    @Override
+    public void setFilter(int filter) {
+        
     }
 
     private class ForwardButtonListener implements ActionListener {

@@ -80,7 +80,7 @@ public class DataManager {
     }
     
     public List<Team> getWinnersOrdered() {
-        return teams.stream().sorted(Comparator.comparing(Team::getTotalWins)).collect(Collectors.toList());
+        return teams.stream().sorted(Comparator.comparing(Team::getTotalWins).reversed()).collect(Collectors.toList());
     }
 
     public List<Integer> getYears() {

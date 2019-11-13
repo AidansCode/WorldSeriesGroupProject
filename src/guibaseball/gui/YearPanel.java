@@ -38,7 +38,6 @@ public class YearPanel extends SeekablePanel {
         add(backButton);
 
         yearInput = new JTextField(4);
-        yearInput.setText(Integer.toString(minYear));
         gridBagConstraints.gridx = 8;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 3;
@@ -77,6 +76,8 @@ public class YearPanel extends SeekablePanel {
         SeekDirectionActionListener seekDirectionActionListener = new SeekDirectionActionListener();
         forwardButton.addActionListener(seekDirectionActionListener);
         backButton.addActionListener(seekDirectionActionListener);
+
+        this.setFilter(minYear);
     }
 
     @Override

@@ -74,7 +74,9 @@ public class DataManager {
     }
 
     public List<WorldSeriesWin> getByTeam(String team) {
-        return wins.stream().filter(curWin -> curWin.getTeam().getTeamName().equals(team)).collect(Collectors.toList());
+        return wins.stream()
+            .filter(curWin -> curWin.getTeam() != null && curWin.getTeam().getTeamName().equals(team) )
+            .collect(Collectors.toList());
     }
     
     public List<Team> getWinnersOrdered() {
@@ -86,6 +88,10 @@ public class DataManager {
         wins.forEach(win -> years.add(win.getYear()));
 
         return years;
+    }
+
+    public List<Team> getTeams() {
+        return teams;
     }
 
 }

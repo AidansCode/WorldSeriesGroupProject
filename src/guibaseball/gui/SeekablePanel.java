@@ -6,6 +6,6 @@ public abstract class SeekablePanel extends JPanel {
 
 	public abstract int getFilter();
 
-	public abstract void setFilter(int filter);
+	public abstract void setFilter(int filter, boolean updateInput);
 
 }

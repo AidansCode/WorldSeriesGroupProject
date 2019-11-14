@@ -18,7 +18,7 @@ public class SeekDirectionActionListener implements ActionListener {
 		Component component = GUIBaseBall.getCurrentPanel();
 		if (component instanceof SeekablePanel) {
 			SeekablePanel panel = (SeekablePanel) component;
-			panel.setFilter(panel.getFilter() + delta);
+			panel.setFilter(panel.getFilter() + delta, true);
 		}
 	}
 

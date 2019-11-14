@@ -75,7 +75,7 @@ public class TeamPanel extends SeekablePanel {
         forwardButton.addActionListener(seekDirectionActionListener);
         backButton.addActionListener(seekDirectionActionListener);
 
-        this.setFilter(0);
+        this.setFilter(0, true);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class TeamPanel extends SeekablePanel {
     }
 
     @Override
-    public void setFilter(int filter) {
+    public void setFilter(int filter, boolean updateInput) {
         List<Team> teams = DataManager.getInstance().getTeams();
         if (filter < 0)
             filter = teams.size() - 1;
@@ -93,7 +93,9 @@ public class TeamPanel extends SeekablePanel {
         curTeam = filter;
 
         Team team = teams.get(curTeam);
-        input.setText(team.getTeamName());
+
+        if (updateInput)
+            input.setText(team.getTeamName());
         updateResult(team);
     }
 

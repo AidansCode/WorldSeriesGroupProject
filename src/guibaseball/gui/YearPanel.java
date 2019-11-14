@@ -1,6 +1,7 @@
 package guibaseball.gui;
 
 import guibaseball.actionlisteners.SeekDirectionActionListener;
+import guibaseball.actionlisteners.YearInputListener;
 import guibaseball.data.DataManager;
 import guibaseball.resource.Team;
 import guibaseball.resource.WorldSeriesWin;
@@ -77,7 +78,8 @@ public class YearPanel extends SeekablePanel {
         forwardButton.addActionListener(seekDirectionActionListener);
         backButton.addActionListener(seekDirectionActionListener);
 
-        this.setFilter(minYear);
+        this.setFilter(minYear, true);
+        yearInput.getDocument().addDocumentListener(new YearInputListener(yearInput));
     }
 
     @Override
@@ -86,23 +88,31 @@ public class YearPanel extends SeekablePanel {
     }
 
     @Override
-    public void setFilter(int filter) {
-        if (filter < minYear)
+    public void setFilter(int filter, boolean updateInput) {
+        if (filter < minYear) {
             filter = maxYear;
-        else if (filter > maxYear)
+            this.setFilter(filter, true);
+        }
+        else if (filter > maxYear) {
             filter = minYear;
+            this.setFilter(filter, true);
+        }
 
-        yearInput.setText(Integer.toString(filter));
+        if (updateInput)
+            yearInput.setText(Integer.toString(filter));
+
         updateResult();
     }
 
     private void updateResult() {
         int year = getFilter();
         WorldSeriesWin win = DataManager.getInstance().getByYear(year);
-        Team team = win.getTeam();
-        String teamName = team != null ? team.getTeamName() : "N/A";
+        if (win != null) {
+            Team team = win.getTeam();
+            String teamName = team != null ? team.getTeamName() : "N/A";
 
-        resultLabel.setText(year + " Winner: " + teamName);
+            resultLabel.setText(year + " Winner: " + teamName);
+        }
     }
 
 }

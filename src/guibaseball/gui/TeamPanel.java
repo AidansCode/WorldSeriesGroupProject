@@ -3,7 +3,7 @@ package guibaseball.gui;
 import guibaseball.actionlisteners.SeekDirectionActionListener;
 import guibaseball.data.DataManager;
 import guibaseball.resource.Team;
-import guibaseball.resource.WorldSeriesWin;
+import guibaseball.resource.WorldSeries;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +15,10 @@ public class TeamPanel extends SeekablePanel {
     private JLabel resultLabel;
     private int curTeam;
 
+    /**
+     * Constructor
+     * Initializes a JPanel featuring a seeker. Will show the years a given MLB team won the World Series
+     */
     public TeamPanel() {
         GridBagLayout gridBagLayout = new GridBagLayout();
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
@@ -78,11 +82,21 @@ public class TeamPanel extends SeekablePanel {
         this.setFilter(0, true);
     }
 
+    /**
+     * Get the current filter being used by the seeker
+     * @return The filter being used by the seeker
+     */
     @Override
     public int getFilter() {
         return curTeam;
     }
 
+    /**
+     * Update the filter being used by the seeker
+     *
+     * @param filter The new filter to be used
+     * @param updateInput Whether or not the panel should update the text field
+     */
     @Override
     public void setFilter(int filter, boolean updateInput) {
         List<Team> teams = DataManager.getInstance().getTeams();
@@ -99,12 +113,17 @@ public class TeamPanel extends SeekablePanel {
         updateResult(team);
     }
 
+    /**
+     * Updates the result text displayed by the panel
+     * Shows a list of every year the given team won the World Series
+     * @param team The team whose winning years should be displayed
+     */
     private void updateResult(Team team) {
         StringBuilder resultMsgBuilder = new StringBuilder(team.getTeamName() + " has won the World Series " + team.getTotalWins() + " time" + (team.getTotalWins() == 1 ? "" : "s" ));
         String resultMsg;
         if (team.getTotalWins() > 0) {
             resultMsgBuilder.append("<br>: ");
-            for(WorldSeriesWin win : DataManager.getInstance().getByTeam(team.getTeamName())) {
+            for(WorldSeries win : DataManager.getInstance().getByTeam(team.getTeamName())) {
                 resultMsgBuilder.append(win.getYear()).append(", ");
             }
 

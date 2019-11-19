@@ -1,7 +1,7 @@
 package guibaseball.data;
 
 import guibaseball.resource.Team;
-import guibaseball.resource.WorldSeriesWin;
+import guibaseball.resource.WorldSeries;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,6 +15,10 @@ public class DataManager {
      */
     private static DataManager instance;
 
+    /**
+     * Gets the (singleton) instance of the DataManager class
+     * @return The singleton instance of the DataManager class
+     */
     public static DataManager getInstance() {
         if (instance == null) {
             instance = new DataManager();
@@ -26,9 +30,13 @@ public class DataManager {
     /**
      *  INSTANCE LOGIC
      */
-    private ArrayList<WorldSeriesWin> wins;
+    private ArrayList<WorldSeries> wins;
     private ArrayList<Team> teams;
 
+    /**
+     * Constructor
+     * Parses the "data.csv" file
+     */
     private DataManager() {
         wins = new ArrayList<>();
         teams = new ArrayList<>();
@@ -54,8 +62,8 @@ public class DataManager {
                     }
                 }
 
-                WorldSeriesWin worldSeriesWin = new WorldSeriesWin(team, year);
-                wins.add(worldSeriesWin);
+                WorldSeries worldSeries = new WorldSeries(team, year);
+                wins.add(worldSeries);
             }
 
             wins.forEach(win -> {
@@ -69,20 +77,38 @@ public class DataManager {
         }
     }
 
-    public WorldSeriesWin getByYear(int year) {
+    /**
+     * Returns the winner of a given year. Null if not found
+     * @param year The year to find the winner for
+     * @return The WorldSeries for the given year, null if not found
+     */
+    public WorldSeries getByYear(int year) {
         return wins.stream().filter(curWin -> curWin.getYear() == year).findFirst().orElse(null);
     }
 
-    public List<WorldSeriesWin> getByTeam(String team) {
+    /**
+     * Returns a list of all WorldSeriesWins for a given team
+     * @param team The team to find all wins for
+     * @return A list of all WorldSeriesWins for a given team
+     */
+    public List<WorldSeries> getByTeam(String team) {
         return wins.stream()
             .filter(curWin -> curWin.getTeam() != null && curWin.getTeam().getTeamName().equals(team) )
             .collect(Collectors.toList());
     }
-    
+
+    /**
+     * Return a list of all world series winning teams, in order of most to least wins
+     * @return A list of all world series winning teams, in order of most to least wins
+     */
     public List<Team> getWinnersOrdered() {
         return teams.stream().sorted(Comparator.comparing(Team::getTotalWins).reversed()).collect(Collectors.toList());
     }
 
+    /**
+     * Return a list of all the valid years with a saved WorldSeries (including 1904 and 1994, where there was no winner)
+     * @return A list of all the valid years with a saved WorldSeries (including 1904 and 1994, where there was no winner)
+     */
     public List<Integer> getYears() {
         ArrayList<Integer> years = new ArrayList<>();
         wins.forEach(win -> years.add(win.getYear()));
@@ -90,6 +116,10 @@ public class DataManager {
         return years;
     }
 
+    /**
+     * Return a list of all valid teams
+     * @return A list of all valid teams
+     */
     public List<Team> getTeams() {
         return teams;
     }

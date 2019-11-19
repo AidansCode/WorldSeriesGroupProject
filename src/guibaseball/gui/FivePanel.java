@@ -8,6 +8,11 @@ import java.util.List;
 
 public class FivePanel extends JPanel {
 
+    /**
+     * Constructor
+     * Initializes a panel listing the top 5 teams by how many world series they won
+     * Will list multiple teams in the same ranking position if they have the same amount of wins
+     */
     public FivePanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

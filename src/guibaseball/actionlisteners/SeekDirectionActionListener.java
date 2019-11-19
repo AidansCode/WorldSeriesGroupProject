@@ -10,6 +10,10 @@ import java.awt.event.ActionListener;
 
 public class SeekDirectionActionListener implements ActionListener {
 
+	/**
+	 * Handles the event of a seek button being clicked. Updates the app's current panel
+	 * @param actionEvent The ActionEvent being responded to
+	 */
 	@Override
 	public void actionPerformed(ActionEvent actionEvent) {
 		SeekButton source = (SeekButton) actionEvent.getSource();

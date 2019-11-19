@@ -4,7 +4,7 @@ import guibaseball.actionlisteners.SeekDirectionActionListener;
 import guibaseball.actionlisteners.YearInputListener;
 import guibaseball.data.DataManager;
 import guibaseball.resource.Team;
-import guibaseball.resource.WorldSeriesWin;
+import guibaseball.resource.WorldSeries;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +16,11 @@ public class YearPanel extends SeekablePanel {
     private JLabel resultLabel;
     private int minYear, maxYear;
 
+    /**
+     * Constructor
+     * Initializes a JPanel featuring a seeker. Will show which team won a given year
+     */
     public YearPanel() {
-
         List<Integer> years = DataManager.getInstance().getYears();
         minYear = years.get(0);
         maxYear = years.get(years.size() - 1);
@@ -82,11 +85,21 @@ public class YearPanel extends SeekablePanel {
         yearInput.getDocument().addDocumentListener(new YearInputListener(yearInput));
     }
 
+    /**
+     * Get the current filter being used by the seeker
+     * @return The filter being used by the seeker
+     */
     @Override
     public int getFilter() {
         return Integer.parseInt(yearInput.getText());
     }
 
+    /**
+     * Update the filter being used by the seeker
+     *
+     * @param filter The new filter to be used
+     * @param updateInput Whether or not the panel should update the text field
+     */
     @Override
     public void setFilter(int filter, boolean updateInput) {
         if (filter < minYear) {
@@ -104,9 +117,13 @@ public class YearPanel extends SeekablePanel {
         updateResult();
     }
 
+    /**
+     * Updates the result text displayed by the panel
+     * Shows which team won the current selected year's World Series
+     */
     private void updateResult() {
         int year = getFilter();
-        WorldSeriesWin win = DataManager.getInstance().getByYear(year);
+        WorldSeries win = DataManager.getInstance().getByYear(year);
         if (win != null) {
             Team team = win.getTeam();
             String teamName = team != null ? team.getTeamName() : "N/A";
